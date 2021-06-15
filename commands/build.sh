@@ -190,7 +190,7 @@ for name in ${FILE_NAMES[@]}; do
 
     if [[ -f "$CURRENT_DOCKER_COMPOSE_FILE" ]]; then
         # Remove empty lines
-        sed -ri '/^\s*$/d' "$CURRENT_DOCKER_COMPOSE_FILE"
+        sed -i '' -E '/^[[:space:]]*$/d' "$CURRENT_DOCKER_COMPOSE_FILE"
 
         substitute_vars() {
             env "${SCRIPT_VARS[@]}" \

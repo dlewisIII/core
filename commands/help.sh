@@ -36,7 +36,7 @@ for file in "${FILES[@]}"; do
         continue
         ;;
     *)
-        printf "$(bash $ENTRYPOINT $command --help | pr -To 2)\n"
+        printf "  $(bash $ENTRYPOINT $command --help)\n"
         ;;
     esac
 done

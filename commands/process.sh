@@ -153,7 +153,7 @@ mv -f "$temp_file" "$OUTPUT_FILE"
 rm -f "$temp_file" && touch "$temp_file"
 while read -r line || [[ -n "$line" ]]; do
     if [[ "$line" =~ "%" ]]; then
-        replaced="$(echo "$line" | sed -E "s/#\s*(.*%.+)//g")"
+        replaced="$(echo "$line" | sed -E "s/#[[:space:]]*(.*%.+)//g")"
 
         if [[ -n "$replaced" ]]; then
             echo "$replaced" >>"$temp_file"

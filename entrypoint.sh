@@ -41,6 +41,7 @@ if [[ -z "$GID" ]]; then
     GID=$(id -g)
 fi
 
+source "$ROOT_DIR/includes/readarray.sh"
 source "$ROOT_DIR/includes/colors.sh"
 source "$ROOT_DIR/includes/debug.sh"
 source "$ROOT_DIR/includes/yq.sh"

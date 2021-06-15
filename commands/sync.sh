@@ -56,7 +56,7 @@ if ! $MODE_SKIP_USER && [[ -n "$SYNC_USER" ]]; then
     $DOCKER_COMPOSE exec "$DEFAULT_SERVICE" usermod -u "$UID" "$SYNC_USER"
 
     if ! $MODE_NO_CHOWN; then
-        HOME_DIR="$($DOCKER_COMPOSE exec --user="$SYNC_USER" "$DEFAULT_SERVICE" env | grep '^HOME=' | sed -r 's/^HOME=(.*)/\1/' | sed 's/\r//' | sed 's/\n//')"
+        HOME_DIR="$($DOCKER_COMPOSE exec --user="$SYNC_USER" "$DEFAULT_SERVICE" env | grep '^HOME=' | sed -E 's/^HOME=(.*)/\1/' | tr -d '\r' | tr -d '\r')"
         if [[ -n "$HOME_DIR" ]]; then
             echo "Recursively chowning home directory '$HOME_DIR'..."
             $DOCKER_COMPOSE exec "$DEFAULT_SERVICE" chown -R "$SYNC_USER" "$HOME_DIR"
@@ -95,7 +95,9 @@ if ! $MODE_SKIP_ENV && [[ -f .env ]]; then
         fi
     done
 
-    readarray -t VARIABLES < <(yq eval '.services.*.environment | select(. != null) | keys | .[]' "$temp_file")
+    declare -a VARIABLES="$(yq eval '.services.*.environment | select(. != null) | keys | .[]' "$temp_file")"
+    # echo "${VARIABLES[@]}"
+    # readarray -t VARIABLES < <(yq eval '.services.*.environment | select(. != null) | keys | .[]' "$temp_file")
 
     temp_env_file="$TEMP_DIR/.env"
     cp -f ".env" "$temp_env_file"

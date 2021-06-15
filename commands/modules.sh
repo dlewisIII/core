@@ -108,6 +108,7 @@ fi
 source "$ROOT_DIR/includes/blueprint/populate_env.sh" ""
 
 yq_read_array MODULES_TO_LOAD 'modules'
+echo "${MODULES_TO_LOAD[@]}"
 EXPLICIT_MODULES_LIST=(${MODULES_TO_LOAD[@]})
 SILENT=true source "$ROOT_DIR/includes/resolve-dependencies.sh" ${MODULES_TO_LOAD[@]}
 ACTIVE_MODULES_LIST=(${MODULES_TO_LOAD[@]})

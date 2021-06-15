@@ -5,7 +5,7 @@ debug_print() {
         prefix="${DEBUG_PREFIX:-DEBUG}"
 
         # Source: https://stackoverflow.com/a/7265130/2467106
-        n=$(md5sum <<<"$prefix") # Get md5 hash of a string
+        n=$(md5 -r <<<"$prefix") # Get md5 hash of a string
         n=$((0x${n%% *}))        # Convert to base 10
         n=${n#-}                 # Remove negative sign
         ((n = $n % 7 + 1))       # Clamp values to the range [1; 6]

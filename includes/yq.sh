@@ -11,7 +11,7 @@ YQ_INSTALLED=false
 which yq > /dev/null
 
 if [[ $? -eq 0 ]]; then
-    version=$(yq --version | sed -E 's/.+\s([[:digit:]])/\1/')
+    version=$(yq --version | sed -E 's/yq version ([[:digit:]])/\1/')
 
     if [[ $version =~ ^4 ]]; then
         YQ_INSTALLED=true
@@ -65,7 +65,10 @@ yq_read_array() {
         FILE="$3"
     fi
 
-    readarray -t "$1" < <(yq eval ".$2[]" "$FILE")
+    # $1=($(yq eval ".$2[]" "$FILE"))
+    # echo "${1}"
+    declare -a $1=$(yq eval ".$2[]" "$FILE")
+    # readarray -t "$1" < <(yq eval ".$2[]" "$FILE")
 }
 
 yq_read_keys() {
@@ -75,5 +78,6 @@ yq_read_keys() {
         FILE="$3"
     fi
 
-    readarray -t "$1" < <(cat "$FILE" | yq eval ".$2 // []" - | yq eval "keys" - | yq eval ".[]" -)
+    declare -a $1="$(cat "$FILE" | yq eval ".$2 // []" - | yq eval "keys" - | yq eval ".[]" -)"
+    # readarray -t "$1" < <(cat "$FILE" | yq eval ".$2 // []" - | yq eval "keys" - | yq eval ".[]" -)
 }

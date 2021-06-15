@@ -11,7 +11,7 @@ for variable in "${VARIABLES[@]}"; do
     # Escape variable value to use with sed
     value="$(echo ${!variable} | sed -E 's|[][\\/.*^$]|\\&|g')"
     # Uncomment the line where the variable is used
-    BUFFER="$(echo "$BUFFER" | sed -E "s/#\s*(.*${SYMBOL}${variable#"$PREFIX"})/\1/g")"
+    BUFFER="$(echo "$BUFFER" | sed -E "s/#[[:space:]]*(.*${SYMBOL}${variable#"$PREFIX"})/\1/g")"
     # Substitute the variable with its value
     BUFFER="$(echo "$BUFFER" | sed -E "s/${SYMBOL}${variable#"$PREFIX"}/$value/g")"
 done

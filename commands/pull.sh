@@ -84,7 +84,7 @@ fi
 # Parse blueprint name and branch
 #
 
-IFS=':' read -r -a BLUEPRINT_PART <<<$BLUEPRINT
+IFS=':' read -r -a BLUEPRINT_PART <<<"$BLUEPRINT"
 
 BLUEPRINT=${BLUEPRINT_PART[0]}
 
@@ -213,7 +213,7 @@ if ! $MODE_DRY_RUN; then
     # Always checkout master first
     git checkout master &>/dev/null
 
-    BRANCHES=($(git --no-pager branch -a --list --color=never | grep -v HEAD | sed -e 's/\s*remotes\/origin\///' | sed -E 's/\* //' | sed -E 's/\s+//' | sort | uniq))
+    BRANCHES=($(git --no-pager branch -a --list --color=never | grep -v HEAD | sed -e 's/[[:space:]]*remotes\/origin\///' | sed -E 's/\* //' | sed -E 's/[[:space:]]+//' | sort | uniq))
     TAGS=($(git --no-pager tag --list --color=never))
 
     for tag in "${TAGS[@]}"; do
